@@ -20,6 +20,7 @@ import os
 import sys
 from typing import Any
 
+
 try:
     import requests
 except ImportError:
@@ -47,7 +48,7 @@ def fetch_beginner_issues(
         List of issue dictionaries
     """
     all_issues = []
-    
+
     # Get GitHub token from environment if available
     headers = {}
     github_token = os.getenv("GITHUB_TOKEN")
@@ -56,7 +57,7 @@ def fetch_beginner_issues(
 
     for label in BEGINNER_LABELS:
         url = f"{GITHUB_API_URL}/repos/{REPO_OWNER}/{REPO_NAME}/issues"
-        params = {
+        params: dict[str, str | int] = {
             "labels": label,
             "state": state,
             "per_page": max_results,
@@ -76,8 +77,8 @@ def fetch_beginner_issues(
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == 403:
                 print(
-                    f"Warning: GitHub API rate limit reached. "
-                    f"Set GITHUB_TOKEN environment variable to increase limits.",
+                    "Warning: GitHub API rate limit reached. "
+                    "Set GITHUB_TOKEN environment variable to increase limits.",
                     file=sys.stderr,
                 )
                 # Continue trying other labels
